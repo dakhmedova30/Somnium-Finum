@@ -34,7 +34,7 @@ var font;
 let i = 0;
 let nextDialogue;
 let walls;
-let runes = 0;
+let runes = 3;
 let hiding = true;
 let startWorm = true;
 let wormPoints = 0;
@@ -58,6 +58,7 @@ let screen28 = true;
 let screen17 = true;
 let screen19a = true;
 let screen19b = true;
+battleEnd = true;
 
 function preload() {
   gif = loadImage("assets/Backgrounds/Start.gif");
@@ -749,6 +750,11 @@ function keyPressed() {
 }
 
 function dialogue() {
+  if (catHP <= 0) {
+    i = 32;
+    screen = 19;
+  }
+  
   nextDialogue = true;
   script = [
     "You slowly open your eyes to a grassy, \nflower-filled field. You somehow       \nappeared here out of thin air, but     \neverything certainly felt real. From   \nthe soft grass to the small breeze in  ",
@@ -782,7 +788,7 @@ function dialogue() {
     "Why did you attack me?!                \n\n\n\n",
     "I-I'm sorry I can't explain right now. \nI... I don't remember you, but you know  \nwho I am! Everything will come back to \nyou... if you just...                      \n",
     "WAKE UP!                               \n\n\n\n"];
-  names = ["...   ", "...   ", "Yana", "You ", "...   ", "...   ", "Yana", "Yana", "Yana", "Yana", "Yana", "You ", "...   ", "You ", "...   ", "Yana", "...   ", "You ", "Yana", "You ", "Yana", "...   ", "You ", "...   ", "Yana", "...   ", "...   ", "Yana", "You ", "Yana", "Yana"];
+  names = ["...   ", "...   ", "Yana", "You ", "...   ", "...   ", "Yana", "Yana", "Yana", "Yana", "Yana", "You ", "You ", "You ", "...   ", "Yana", "...   ", "You ", "Yana", "You ", "Yana", "...   ", "You ", "...   ", "Yana", "...   ", "You ", "Yana", "You ", "Yana", "Yana"];
   print(i);
   faces = [catGirl_Face, catGirl_Face, yana_Face, catGirl_Face, catGirl_Face, catGirl_Face, yana_Face, yana_Face, yana_Face, yana_Face, yana_Face, catGirl_Face, catGirl_Face, catGirl_Face, catGirl_Face, yana_Face, catGirl_Face, catGirl_Face, yana_Face, catGirl_Face, yana_Face, catGirl_Face, catGirl_Face, catGirl_Face, yana_Face, catGirl_Face, catGirl_Face, yana_Face, catGirl_Face, yana_Face, yana_Face];
   print(i);
@@ -813,6 +819,7 @@ function dialogue() {
   }
   if (i == 31) {
     screen = 17;
+    i++;
   }
 }
 
@@ -1026,6 +1033,10 @@ function battle() {
           setTimeout(function() {
             if (enemyHP == 0) {
               battleText = "You won!";
+              if (battleEnd) {
+                i = 27;
+                battleEnd = false;
+              }
               screen = 16;
               enemyTurn = false;
               catTurn = true;
@@ -1097,6 +1108,10 @@ function battle() {
             setTimeout(function() {
               if (enemyHP == 0) {
                 battleText = "You won!";
+                if (battleEnd) {
+                  i = 27;
+                  battleEnd = false;
+                }
                 screen = 16;
                 enemyTurn = false;
                 catTurn = true;
@@ -1111,10 +1126,11 @@ function battle() {
           }
         }
       } else {
+        if (battleEnd) {
+          i = 27;
+          battleEnd = false;
+        }
         screen = 16;
-        // catGirl.pos = { x: 700, y: 700 };
-        // catGirl.scale = 3;
-        // battleStart = true;
       }
     }
     if (enemyTurn) {
@@ -1249,10 +1265,18 @@ function battle() {
           }
         }
       } else {
+        if (battleEnd) {
+          i = 27;
+          battleEnd = false;
+        }
         screen = 16;
       }
     }
   } else {
+    if (battleEnd) {
+      i = 27;
+      battleEnd = false;
+    }
     screen = 16;
   }  
 }
